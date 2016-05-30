@@ -37,7 +37,7 @@
 		<td>그룹이름</td><td><input type="text" id="g_name"></td>
 		</tr>
 		<tr>
-		<td>날짜</td><td><input type="text" id="s_date"></td>
+		<td>날짜</td><td><input type="text" id="s_date" readonly="readonly"></td>
 		</tr>
 		<tr>
 		<td>참석자</td><td><input type="text" id="s_joinmem"></td>
@@ -103,19 +103,10 @@
      showmethe();
  }
 
-
-/*    $(function(){
-	 $(".getdate").click(function(){
-		var dd=$(this).val(); 
-		alert("dd");
-	 });
- });   */
- 
+ //클릭한 날짜로 모달의 value값 주기
   function getDate(year,month,day){
-	alert("dd");
-	alert(year);
-	alert(month);
-	alert(day);
+	var inputday=year+"년 "+month+"월 "+day+"일";
+	$("#s_date").val(inputday);
  } 
 
  function showmethe(){ // 다 로드되고 바로 시작되는 함수
