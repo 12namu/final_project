@@ -2,7 +2,7 @@ package com.eteam.gstudy;
 
 import java.sql.Date;
 
-public class Study_boardDTO {
+public class Group_SubjectDTO {
 	private int s_Num;
     private int g_Num;
     private String m_Id;
@@ -10,6 +10,8 @@ public class Study_boardDTO {
     private String s_Joinmem;
     private String s_Title;
     private String s_Contents;
+    private String s_MeetingDay;
+    
 	public int getS_Num() {
 		return s_Num;
 	}
@@ -52,4 +54,12 @@ public class Study_boardDTO {
 	public void setS_Contents(String s_Contents) {
 		this.s_Contents = s_Contents;
 	}
+	public String getS_MeetingDay() {
+		return s_MeetingDay;
+	}
+	public void setS_MeetingDay(String s_MeetingDay) {
+		this.s_MeetingDay = s_MeetingDay;
+	}
+	
+	
 }

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+
+<mapper namespace="SubjectMapper">
+
+<!-- 	<insert id="recordMeeting" parameterType="com.eteam.gstudy.Group_SubjectDTO">
+		insert into group_study
+		values
+		(g_study_seq.nextVal, {g_num}, {m_id}, sysdate, {s_joinmem}, {s_title}, {s_contents}, {s_meetingday})
+	</insert> -->
+
+	<select id="search" resultType="com.eteam.groupInfo.Group_JoinDTO">
+		select * from group_join where g_num=#{g_num}
+	</select>
+</mapper>

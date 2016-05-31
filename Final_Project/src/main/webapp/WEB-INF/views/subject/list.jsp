@@ -3,7 +3,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <title>스터디그룹</title>
+
 <link rel="stylesheet" href="<%=application.getContextPath()%>/resources/css/subject/list.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
 </head>
@@ -34,13 +36,21 @@
       <div class="modal-body">    	
 		<table class="table">
 		<tr>
+		<td>작성자</td><td><input type="text" id="m_id" readonly="readonly"></td>
+		</tr>
+		<tr>
 		<td>그룹이름</td><td><input type="text" id="g_name"></td>
 		</tr>
 		<tr>
 		<td>날짜</td><td><input type="text" id="s_date" readonly="readonly"></td>
 		</tr>
 		<tr>
-		<td>참석자</td><td><input type="text" id="s_joinmem"></td>
+		<td>참석자</td>
+		<td>
+			<c:forEach items="" var="i">
+			<input type="checkbox" name="s_joinmem" id="mem1">
+			</c:forEach>
+		</td>
 		</tr>
 		<tr>
 		<td>주제</td><td><input type="text" id="s_title"></td>
@@ -107,6 +117,24 @@
   function getDate(year,month,day){
 	var inputday=year+"년 "+month+"월 "+day+"일";
 	$("#s_date").val(inputday);
+	
+	alert("그룹멤버 불러오기");
+	//그룹멤버 찾아와서 넣기.
+	$.ajax({
+		url:"searchGMember",
+		type:"post",
+		data:{
+			g_num:1
+		},
+		headers:{
+	         "Content-Type": "application/json",
+	         "X-HTTP-Method-Override": "POST"
+	      },
+	    dataType:'json',
+		succes:function(result){
+			alert(result);
+		}
+	});
  } 
 
  function showmethe(){ // 다 로드되고 바로 시작되는 함수
@@ -140,10 +168,7 @@
 	
 
    for( i = 1 ; i <= m[mm-1] ; i++ ){    // 월마지막달 배열 중 이번달 꺼 빼서 요일에 맞게 알아서 넣음 ... !!!
-
-	   sum += "<td align='center'>"+"<button type='button' onclick='getDate("+yy+","+mm+","+i+")' class='btn btn-link dd' value="+i +" data-toggle='modal' data-target='#add'>"+"<input type='hidden' value="+i +">"+ i+"</a>" +"</td>";
-
-  
+	   sum += "<td align='center'>"+"<button type='button' onclick='getDate("+yy+","+mm+","+i+")' class='btn btn-link dd' value="+i +" data-toggle='modal' data-target='#add'>"+i+"</td>";  
    if(new Date(yy,mm-1,i).getDay() == 6){  // 토요일이면 행 바꿔주고
     	 sum += "</tr>";
      if(i != m[m-1]){ // 달마지막과 i 값을 비교하여 같지 않다면 새로운 행을 시작한다.
