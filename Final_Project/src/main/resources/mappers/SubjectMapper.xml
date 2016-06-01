@@ -15,4 +15,8 @@
 	<select id="search" resultType="com.eteam.groupInfo.Group_JoinDTO">
 		select * from group_join where g_num=#{g_num}
 	</select>
+	
+	<select id="listSubject" resultType="com.eteam.gstudy.Group_SubjectDTO">
+		select * from group_study where g_num=#{g_num}
+	</select>
 </mapper>

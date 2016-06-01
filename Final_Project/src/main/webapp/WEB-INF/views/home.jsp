@@ -21,15 +21,18 @@
 	
 	</script>
 </head>
-<%@ include file="comm/index_header.jsp" %>
+<%@ include file="/WEB-INF/views/comm/index_header.jsp" %>
 
 <div id="middle">
 	<div id="middle_box1">
 		<div id="realtime">
 		
-		<a href="./subject/list">캘린더가기</a>
+		<a href="./subject/getList?g_num=0">캘린더가기</a>
+
 		</div>
 	</div>
+	
+	
 	
 	<div id="middle_box2">
 		<div id="input_box">
@@ -41,6 +44,6 @@
 	</div>
 </div>
 
-<%@ include file="comm/index_footer.jspf" %>
+<%@ include file="/WEB-INF/views/comm/index_footer.jspf" %>
 </body>
 </html>

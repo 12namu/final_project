@@ -20,10 +20,12 @@ public class Group_SubjectDAOImpl implements Group_SubjectDAO {
 
 	@Override
 	public List<Group_JoinDTO> search(int g_num) {	
-		System.out.println("dao들어옴, 리턴해줌");
 		return sqlSession.selectList(NAMESPACE+"search", g_num);
 	}
 	
-	
+	@Override
+	public List<Group_SubjectDTO> listSubject(int g_num) throws Exception {
+		return sqlSession.selectList(NAMESPACE+"listSubject", g_num);
+	}
 	
 }

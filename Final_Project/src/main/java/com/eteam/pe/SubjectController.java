@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.eteam.groupInfo.Group_JoinDTO;
+import com.eteam.gstudy.Group_SubjectDTO;
 import com.eteam.gstudy.Group_SubjectService;
 
 @Controller
@@ -22,16 +24,22 @@ public class SubjectController {
 	Group_SubjectService subjectService;
 	
 	
-	@RequestMapping("/list")
-	public void list(){
+	@RequestMapping(value="/getList")
+	public ModelAndView list(@RequestParam("g_num") int g_num){
+		List<Group_SubjectDTO> list=subjectService.listSubject(g_num);
+		ModelAndView mv=new ModelAndView();
+		mv.addObject("list", list);
+		mv.setViewName("subject/list");
+		return mv;
 	}
+	
 	
 	@RequestMapping(value="/searchGMember", method=RequestMethod.POST)
 	@ResponseBody
 	public List<Group_JoinDTO> search(@RequestParam("g_num") int g_num){
-		System.out.println("컨트롤러들어옴");
 		List<Group_JoinDTO> group=subjectService.search(g_num);
-		System.out.println("컨트롤러에서 list 리턴해옴");
 		return group;
 	}
+	
+	
 }

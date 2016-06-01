@@ -14,12 +14,28 @@
 <%@ include file="../comm/header.jsp" %>
 
 <div id="middle">
- <input type="hidden" id="year">
- <input type="hidden" id="month">
- <input type="hidden" id="date"> 
+	<input type="hidden" id="year">
+ 	<input type="hidden" id="month">
+ 	<input type="hidden" id="date"> 
  
  <div id="show"></div>
- 
+	
+	<div id="middle_right">
+		<table class="table table-bordered">
+			<tr>
+			<td>진행일</td><td>참석자</td><td>제목</td><td>작성일</td>
+			</tr>
+			<c:forEach items="${list}" var="i">
+			<tr>
+			<td>${i.s_yy}-${i.s_mm}-${i.s_dd}</td>
+			<td>${i.s_Joinmem}</td>
+			<td>${i.s_Title}</td>
+			<td>${i.s_Date}</td>
+			</tr>
+			</c:forEach>
+		</table>
+	</div>
+	 
  
  </div><!--middle-->
  
@@ -46,10 +62,7 @@
 		</tr>
 		<tr>
 		<td>참석자</td>
-		<td>
-			<c:forEach items="" var="i">
-			<input type="checkbox" name="s_joinmem" id="mem1">
-			</c:forEach>
+		<td id="tdMem">
 		</td>
 		</tr>
 		<tr>
@@ -62,7 +75,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-danger">Save changes</button>
+        <button type="submit" class="btn btn-danger">작성완료</button>
       </div>
      </form> 
       
@@ -118,21 +131,22 @@
 	var inputday=year+"년 "+month+"월 "+day+"일";
 	$("#s_date").val(inputday);
 	
-	alert("그룹멤버 불러오기");
-	//그룹멤버 찾아와서 넣기.
+	//그룹멤버 불러오기
 	$.ajax({
 		url:"searchGMember",
 		type:"post",
 		data:{
-			g_num:1
+			g_num:0
 		},
-		headers:{
-	         "Content-Type": "application/json",
-	         "X-HTTP-Method-Override": "POST"
-	      },
 	    dataType:'json',
-		succes:function(result){
-			alert(result);
+		success:function(result){
+			$("#tdMem").html("");
+			$(result).each(function(){	
+				$("#tdMem").append("&nbsp;&nbsp;"+"<input type='checkbox' name='s_joinmem' id='mem' value="+this.m_id+">"+this.m_id)		
+			});
+			
+		},error:function(f){
+			alert("error"+f);
 		}
 	});
  } 
@@ -168,8 +182,14 @@
 	
 
    for( i = 1 ; i <= m[mm-1] ; i++ ){    // 월마지막달 배열 중 이번달 꺼 빼서 요일에 맞게 알아서 넣음 ... !!!
+	 	//일 뿌려주는 곳
+	 	
+	   
+		   
+		   
 	   sum += "<td align='center'>"+"<button type='button' onclick='getDate("+yy+","+mm+","+i+")' class='btn btn-link dd' value="+i +" data-toggle='modal' data-target='#add'>"+i+"</td>";  
-   if(new Date(yy,mm-1,i).getDay() == 6){  // 토요일이면 행 바꿔주고
+  
+	   if(new Date(yy,mm-1,i).getDay() == 6){  // 토요일이면 행 바꿔주고
     	 sum += "</tr>";
      if(i != m[m-1]){ // 달마지막과 i 값을 비교하여 같지 않다면 새로운 행을 시작한다.
     	  sum += "<tr>"

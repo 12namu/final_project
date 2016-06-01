@@ -10,7 +10,9 @@ public class Group_SubjectDTO {
     private String s_Joinmem;
     private String s_Title;
     private String s_Contents;
-    private String s_MeetingDay;
+    private int s_yy;
+    private int s_mm;
+    private int s_dd;
     
 	public int getS_Num() {
 		return s_Num;
@@ -54,12 +56,24 @@ public class Group_SubjectDTO {
 	public void setS_Contents(String s_Contents) {
 		this.s_Contents = s_Contents;
 	}
-	public String getS_MeetingDay() {
-		return s_MeetingDay;
+	public int getS_yy() {
+		return s_yy;
 	}
-	public void setS_MeetingDay(String s_MeetingDay) {
-		this.s_MeetingDay = s_MeetingDay;
+	public void setS_yy(int s_yy) {
+		this.s_yy = s_yy;
 	}
-	
+	public int getS_mm() {
+		return s_mm;
+	}
+	public void setS_mm(int s_mm) {
+		this.s_mm = s_mm;
+	}
+	public int getS_dd() {
+		return s_dd;
+	}
+	public void setS_dd(int s_dd) {
+		this.s_dd = s_dd;
+	}
+
 	
 }

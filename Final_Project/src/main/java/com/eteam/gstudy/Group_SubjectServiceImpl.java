@@ -16,10 +16,20 @@ public class Group_SubjectServiceImpl implements Group_SubjectService {
 
 	@Override
 	public List<Group_JoinDTO> search(int g_num) {
-		System.out.println("service 들어옴, 리스트 리턴해줌");
 		List<Group_JoinDTO> group=subjectDAO.search(g_num);
 		return group;		
 	}
 	
+	@Override
+	public List<Group_SubjectDTO> listSubject(int g_num) {
+		List<Group_SubjectDTO> listSubject = null;
+		try {
+			listSubject=subjectDAO.listSubject(g_num);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return listSubject;
+	}
 	
 }
