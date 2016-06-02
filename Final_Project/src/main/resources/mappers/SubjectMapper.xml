@@ -17,6 +17,6 @@
 	</select>
 	
 	<select id="listSubject" resultType="com.eteam.gstudy.Group_SubjectDTO">
-		select * from group_study where g_num=#{g_num}
+		select * from group_study where g_num=#{g_num} order by s_yy desc, s_mm desc , s_dd desc 
 	</select>
 </mapper>

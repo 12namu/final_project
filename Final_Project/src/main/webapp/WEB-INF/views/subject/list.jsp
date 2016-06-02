@@ -27,7 +27,7 @@
 			</tr>
 			<c:forEach items="${list}" var="i">
 			<tr>
-			<td>${i.s_yy}-${i.s_mm}-${i.s_dd}</td>
+			<td><input type="hidden" class="s_year" value="${i.s_yy}">${i.s_yy}-<input type="hidden" class="s_month" value="${i.s_mm}">${i.s_mm}-<input type="hidden" class="s_day" value="${i.s_dd}">${i.s_dd}</td>
 			<td>${i.s_Joinmem}</td>
 			<td>${i.s_Title}</td>
 			<td>${i.s_Date}</td>
@@ -36,8 +36,9 @@
 		</table>
 	</div>
 	 
- 
  </div><!--middle-->
+ 	
+ 
  
  <!--일정추가 modal-->
  <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
@@ -174,21 +175,26 @@
    		 sum += "<td>&nbsp;</td>"
  	  }
 
-      
-   /*<a class="joinLink" href="#" data-toggle="modal" data-target="#myModal5">로그인</a>*/
-  /* "<td align='center' style='color:red;'>" + "<a href='#' data-toggle='modal' data-target='#add' onclick=''>"+i+"</a>" +"</td>";*/
+ 
    var m = [31,28,31,30,31,30,31,31,30,31,30,31]; // 월의 마지막 날짜를 배열에 넣는다.
-   m[1] = (yy%400==0 || yy%4==0 && yy%100!=0) ? 29 : 28;
+   m[1] = (yy%400==0 || yy%4==0 && yy%100!=0) ? 29 : 28;	
 	
-
+	 	var subject_yy=document.getElementsByClassName("s_year");
+   		var subject_mm=document.getElementsByClassName("s_month");
+   		var subject_dd=document.getElementsByClassName("s_day");
+   		var k=0;
+   		
+   		
    for( i = 1 ; i <= m[mm-1] ; i++ ){    // 월마지막달 배열 중 이번달 꺼 빼서 요일에 맞게 알아서 넣음 ... !!!
-	 	//일 뿌려주는 곳
-	 	
-	   
-		   
-		   
-	   sum += "<td align='center'>"+"<button type='button' onclick='getDate("+yy+","+mm+","+i+")' class='btn btn-link dd' value="+i +" data-toggle='modal' data-target='#add'>"+i+"</td>";  
-  
+	 	//일 뿌려주는 곳		 	
+		if(subject_yy[k].value == yy && subject_mm[k].value == mm && subject_dd[k].value == i){
+			sum += "<td align='center'>"+"<button type='button' onclick='getDate("+yy+","+mm+","+i+")' class='btn btn-link dd' value="+i +" data-toggle='modal' data-target='#add'>"+i+"<br><img src='<%=request.getContextPath()%>/resources/img/subject/check.png'>"+"</td>";
+		}else{
+			 sum += "<td align='center'>"+"<button type='button' onclick='getDate("+yy+","+mm+","+i+")' class='btn btn-link dd' value="+i +" data-toggle='modal' data-target='#add'>"+i+"</td>";  
+		}	
+		
+		
+   
 	   if(new Date(yy,mm-1,i).getDay() == 6){  // 토요일이면 행 바꿔주고
     	 sum += "</tr>";
      if(i != m[m-1]){ // 달마지막과 i 값을 비교하여 같지 않다면 새로운 행을 시작한다.
