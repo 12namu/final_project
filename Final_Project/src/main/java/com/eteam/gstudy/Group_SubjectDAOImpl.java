@@ -19,6 +19,11 @@ public class Group_SubjectDAOImpl implements Group_SubjectDAO {
 	private static final String NAMESPACE="SubjectMapper.";
 
 	@Override
+	public int record(Group_SubjectDTO g_sdto) throws Exception {
+		return sqlSession.insert(NAMESPACE+"record", g_sdto);
+	}
+	
+	@Override
 	public List<Group_JoinDTO> search(int g_num) {	
 		return sqlSession.selectList(NAMESPACE+"search", g_num);
 	}

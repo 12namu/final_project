@@ -24,6 +24,16 @@ public class SubjectController {
 	Group_SubjectService subjectService;
 	
 	
+	@RequestMapping(value="/setSubject", method=RequestMethod.POST)
+	public String set(Group_SubjectDTO sdto){
+		int result=subjectService.record(sdto);	
+		if(result>0){
+			return "입력성공";
+		}else{
+			return "입력실패";
+		}
+	}
+	
 	@RequestMapping(value="/getList")
 	public ModelAndView list(@RequestParam("g_num") int g_num){
 		List<Group_SubjectDTO> list=subjectService.listSubject(g_num);
@@ -40,6 +50,5 @@ public class SubjectController {
 		List<Group_JoinDTO> group=subjectService.search(g_num);
 		return group;
 	}
-	
 	
 }

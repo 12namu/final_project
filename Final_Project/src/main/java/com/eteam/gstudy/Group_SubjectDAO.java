@@ -10,4 +10,5 @@ public interface Group_SubjectDAO {
 	
 	public List<Group_SubjectDTO> listSubject(int g_num) throws Exception;
 	
+	public int record(Group_SubjectDTO g_sdto) throws Exception;
 }

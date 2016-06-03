@@ -13,7 +13,19 @@ public class Group_SubjectServiceImpl implements Group_SubjectService {
 
 	@Inject
 	Group_SubjectDAOImpl subjectDAO;
-
+	
+	@Override
+	public int record(Group_SubjectDTO g_sdto) {
+		int result=0;
+		try {
+			result=subjectDAO.record(g_sdto);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+		return result;
+	}
+	
 	@Override
 	public List<Group_JoinDTO> search(int g_num) {
 		List<Group_JoinDTO> group=subjectDAO.search(g_num);
@@ -31,5 +43,7 @@ public class Group_SubjectServiceImpl implements Group_SubjectService {
 		}
 		return listSubject;
 	}
+	
+	
 	
 }
