@@ -112,6 +112,8 @@
 	var joinmem=document.getElementsByClassName("s_joinmem");
  
  function prev() { // 지난달
+	 
+	 
   var yy = document.getElementById("year").value;
   var mm = document.getElementById("month").value;
   		mm--;
@@ -119,10 +121,32 @@
   			 mm = 12;
   			 yy--;
   }
+  		
+	$.ajax({
+		url:"ajaxList",
+		type:"post",
+		data:{
+			g_num:0,
+			s_yy:yy,
+			s_mm:mm
+		},
+		success:function(result){
+			$("#middle_right").html(result);
+		 	//list받아온 것 저장
+			var subject_yy=document.getElementsByClassName("s_year");
+			var subject_mm=document.getElementsByClassName("s_month");
+			var subject_dd=document.getElementsByClassName("s_day");
+			var title=document.getElementsByClassName("s_title");
+			var m_id=document.getElementsByClassName("m_id");
+			var contents=document.getElementsByClassName("s_contents");	
+			var s_date=document.getElementsByClassName("s_date");
+			var joinmem=document.getElementsByClassName("s_joinmem");		
+		},
+	});
 
   document.getElementById("year").value = yy;
   document.getElementById("month").value = mm;
-    showmethe();
+     showmethe(); 
  }
 
  function next() { // 다음달
@@ -133,12 +157,34 @@
  			  mm = 1;
 			  yy++;
   			}
-
+  		$.ajax({
+  			url:"ajaxList",
+  			type:"post",
+  			data:{
+  				g_num:0,
+  				s_yy:yy,
+  				s_mm:mm
+  			},			
+  			success:function(result){
+  				$("#middle_right").html(result);
+  			 	//list받아온 것 저장
+  				var subject_yy=document.getElementsByClassName("s_year");
+  				var subject_mm=document.getElementsByClassName("s_month");
+  				var subject_dd=document.getElementsByClassName("s_day");
+  				var title=document.getElementsByClassName("s_title");
+  				var m_id=document.getElementsByClassName("m_id");
+  				var contents=document.getElementsByClassName("s_contents");	
+  				var s_date=document.getElementsByClassName("s_date");
+  				var joinmem=document.getElementsByClassName("s_joinmem");
+  			},
+  		});
+  		
  	 document.getElementById("year").value = yy;
      document.getElementById("month").value = mm;
      showmethe();
  }
 
+ //일정입력하기
  function setSubject(){
 	 var join="";
 	   $('#mem:checked').each(function() { 
@@ -146,13 +192,6 @@
 	   });
 	   alert(join);
 	   alert($("#m_id").val());
-	   alert($("#g_num").val());
-	   alert($("#s_title").val());
-	   alert($("#s_contents").val());
-	   alert($("#s_yy").val());
-	   
-	   
-	   
 	   
 	 $.ajax({
 		url:"setSubject",
@@ -198,6 +237,7 @@
 		}//if문 끝
 	}//function 끝
 	
+	//참석회원 수정
 	function alterMember(){
 		$.ajax({
 			url:"searchGMember",
@@ -216,6 +256,7 @@
 			}); 		
 		}
 	
+	//그룹내 회원조회
 	function SearchMember(){
 	$.ajax({
 		url:"searchGMember",

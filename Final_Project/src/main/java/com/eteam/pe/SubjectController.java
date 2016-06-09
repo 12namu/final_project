@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.eteam.comm.MakePage;
 import com.eteam.groupInfo.Group_JoinDTO;
 import com.eteam.gstudy.Group_SubjectDTO;
 import com.eteam.gstudy.Group_SubjectService;
@@ -35,12 +36,28 @@ public class SubjectController {
 	}
 	
 	@RequestMapping(value="/getList")
-	public ModelAndView list(@RequestParam("g_num") int g_num){
-		List<Group_SubjectDTO> list=subjectService.listSubject(g_num);
+	public ModelAndView list(@RequestParam("g_num") int g_num,MakePage makepage){
+		makepage.setDate();
+		List<Group_SubjectDTO> list=subjectService.listSubject(g_num,makepage);
 		ModelAndView mv=new ModelAndView();
 		mv.addObject("list", list);
 		mv.setViewName("subject/list");
 		return mv;
+	}
+	
+	@RequestMapping(value="/ajaxList")
+	public ModelAndView ajaxList(@RequestParam("g_num") int g_num, @RequestParam("s_yy")int s_yy, @RequestParam("s_mm") int s_mm, MakePage makepage){
+		makepage.setYy(s_yy);
+		makepage.setMm(s_mm);
+		List<Group_SubjectDTO> list=subjectService.listSubject(g_num, makepage);
+		ModelAndView mv=new ModelAndView();
+		mv.addObject("list",list);
+		mv.setViewName("subject/calList");
+		for(int i=0;i<list.size();i++){
+			System.out.println(list.get(i).getS_mm());
+			System.out.println(list.get(i).getM_Id());
+		}
+		return mv;		
 	}
 	
 	

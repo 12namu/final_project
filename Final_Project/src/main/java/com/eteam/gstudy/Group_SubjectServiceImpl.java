@@ -1,11 +1,13 @@
 package com.eteam.gstudy;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
+import com.eteam.comm.MakePage;
 import com.eteam.groupInfo.Group_JoinDTO;
 
 @Service
@@ -33,10 +35,15 @@ public class Group_SubjectServiceImpl implements Group_SubjectService {
 	}
 	
 	@Override
-	public List<Group_SubjectDTO> listSubject(int g_num) {
+	public List<Group_SubjectDTO> listSubject(int g_num,MakePage makePage) {
 		List<Group_SubjectDTO> listSubject = null;
+		HashMap<String,Integer> hs=new HashMap<String, Integer>();
+		hs.put("yy", makePage.getYy());
+		hs.put("mm", makePage.getMm());
+		hs.put("g_num", g_num);
+		
 		try {
-			listSubject=subjectDAO.listSubject(g_num);
+			listSubject=subjectDAO.listSubject(hs);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

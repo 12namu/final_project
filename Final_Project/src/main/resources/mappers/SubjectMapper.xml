@@ -16,7 +16,7 @@
 		select * from group_join where g_num=#{g_num}
 	</select>
 	
-	<select id="listSubject" resultType="com.eteam.gstudy.Group_SubjectDTO">
-		select * from group_study where g_num=#{g_num} order by s_yy desc, s_mm desc , s_dd desc 
+	<select id="listSubject" parameterType="hashmap" resultType="com.eteam.gstudy.Group_SubjectDTO">
+		select * from group_study where g_num=#{g_num} and s_yy=#{yy} and s_mm=#{mm} order by s_dd desc 
 	</select>
 </mapper>

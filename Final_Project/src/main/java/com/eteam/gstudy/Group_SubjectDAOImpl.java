@@ -1,5 +1,6 @@
 package com.eteam.gstudy;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -29,8 +30,8 @@ public class Group_SubjectDAOImpl implements Group_SubjectDAO {
 	}
 	
 	@Override
-	public List<Group_SubjectDTO> listSubject(int g_num) throws Exception {
-		return sqlSession.selectList(NAMESPACE+"listSubject", g_num);
+	public List<Group_SubjectDTO> listSubject(HashMap<String,Integer> hs) throws Exception {
+		return sqlSession.selectList(NAMESPACE+"listSubject", hs);
 	}
 	
 }
