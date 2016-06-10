@@ -52,36 +52,37 @@
         <h4 class="modal-title" id="gridSystemModalLabel">모임추가</h4>
       </div>
   		
-<!--   	<form action="./setSubject" method="post"> -->
+  	<form action="./setSubject" method="post">
       <div class="modal-body">    	
 		<table class="table">
 		<tr>
-		<td>작성자</td><td><input type="text" id="m_id"></td>
+		<td>작성자</td><td><input type="text" id="m_id" name="m_Id"></td>
 		</tr>
 		<tr>
-		<td>그룹이름</td><td><input type="text" id="g_name"><input type="hidden" id="g_num" value="0"></td>
+		<td>그룹이름</td><td><input type="text" id="g_name"><input type="hidden" id="g_num" value="0" name="g_Num"></td>
 		</tr>
 		<tr>
-		<td>날짜</td><td><input type="text" id="s_date" readonly="readonly"></td>
-		</tr>
-		<tr>
-		<td>참석자</td>
-		<td id="tdMem">
+		<td>날짜</td><td><input type="text" id="s_date" readonly="readonly">
+			<input type="hidden" id="ss_yy" name="s_yy"><input type="hidden" id="ss_mm" name="s_mm"><input type="hidden" id="ss_dd" name="s_dd">
 		</td>
 		</tr>
 		<tr>
-		<td>주제</td><td><input type="text" id="s_title"></td>
+		<td>참석자<input type="hidden" id="td_joinmem" name="s_Joinmem" readonly="readonly"></td></td>
+		<td id="tdMem"></td>
 		</tr>
 		<tr>
-		<td>세부내용 </td><td><textarea rows="10" cols="50" id="s_contents"></textarea></td>
+		<td>주제</td><td><input type="text" id="s_title" name="s_Title"></td>
+		</tr>
+		<tr>
+		<td>세부내용 </td><td><textarea rows="10" cols="50" id="s_contents" name="s_Contents"></textarea></td>
 		</tr>
 		</table>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="submit" class='btn btn-warning' onclick='setSubject()'">작성완료</button>
+        <button type="submit" class='btn btn-warning' onclick='setSubject()'>작성완료</button>
       </div>
-<!--      </form> -->
+      </form>
       
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
@@ -100,8 +101,7 @@
  
  document.getElementById("year").value = year;  // 이 녀석을 셋팅해준다. ( 이 친구들이 달력의 년도와 달 정보를 담는 변수 정도로 생각 하면 됭 ~ )  
  document.getElementById("month").value = month+1; // 이 녀석을 셋팅해준다.
-
- 	//list받아온 것 저장
+ 
 	var subject_yy=document.getElementsByClassName("s_year");
 	var subject_mm=document.getElementsByClassName("s_month");
 	var subject_dd=document.getElementsByClassName("s_day");
@@ -110,10 +110,10 @@
 	var contents=document.getElementsByClassName("s_contents");	
 	var s_date=document.getElementsByClassName("s_date");
 	var joinmem=document.getElementsByClassName("s_joinmem");
+
  
- function prev() { // 지난달
-	 
-	 
+ function prev() { // 지난달 
+  var middle = document.getElementById("middle_right");
   var yy = document.getElementById("year").value;
   var mm = document.getElementById("month").value;
   		mm--;
@@ -122,34 +122,42 @@
   			 yy--;
   }
   		
-	$.ajax({
-		url:"ajaxList",
-		type:"post",
-		data:{
-			g_num:0,
-			s_yy:yy,
-			s_mm:mm
-		},
+  	var load_subject1 ="<table class='table table-bordered'><tr>";
+  		load_subject1 +="<td>진행일</td><td>참석자</td><td>제목</td><td>작성일</td><td>작성자</td></tr>";	
+	
+		$.ajax({
+			url:"ajaxList",
+			type:"post",
+			data:{
+				g_num:0,
+				s_yy:yy,
+				s_mm:mm
+			},
 		success:function(result){
-			$("#middle_right").html(result);
-		 	//list받아온 것 저장
-			var subject_yy=document.getElementsByClassName("s_year");
-			var subject_mm=document.getElementsByClassName("s_month");
-			var subject_dd=document.getElementsByClassName("s_day");
-			var title=document.getElementsByClassName("s_title");
-			var m_id=document.getElementsByClassName("m_id");
-			var contents=document.getElementsByClassName("s_contents");	
-			var s_date=document.getElementsByClassName("s_date");
-			var joinmem=document.getElementsByClassName("s_joinmem");		
-		},
+			$(result).each(function(){
+				load_subject1 +="<tr>";
+				load_subject1 +="<td><input type='hidden' class='s_year' id='s_yy' value="+this.s_yy+">"+this.s_yy;
+				load_subject1 +="-<input type='hidden' id='s_mm' class='s_month' value="+this.s_mm+">"+this.s_mm;
+				load_subject1 +="-<input type='hidden' id='s_dd' class='s_day' value="+this.s_dd+">"+this.s_dd+"</td>";
+				load_subject1 +="<td><input type='hidden' class='s_joinmem' value="+this.s_Joinmem+">"+this.s_Joinmem+"</td>";
+				load_subject1 +="<td><input type='hidden' class='s_title' value="+this.s_Title+">"+this.s_Title+"</td>";
+				load_subject1 +="<td><input type='hidden' class='s_date' value="+this.s_Date+">"+this.s_Date+"</td>";
+				load_subject1 +="<td><input type='hidden' class='m_id' value="+this.m_Id+">"+this.m_Id;
+				load_subject1 +="<input type='hidden' class='s_contents' value="+this.s_Contents+"></td></tr>";
+				load_subject1 +="</tr>";
+			});
+				load_subject1 +="</table>";
+				middle.innerHTML = load_subject1;
+  		document.getElementById("year").value = yy;
+		document.getElementById("month").value = mm;
+     	showmethe(); 
+		}
 	});
 
-  document.getElementById("year").value = yy;
-  document.getElementById("month").value = mm;
-     showmethe(); 
  }
 
  function next() { // 다음달
+	 var middle = document.getElementById("middle_right");
  	 var yy = document.getElementById("year").value;
  	 var mm = document.getElementById("month").value;
  		 mm++;
@@ -157,6 +165,9 @@
  			  mm = 1;
 			  yy++;
   			}
+  		var load_subject ="<table class='table table-bordered'><tr>";
+  			load_subject +="<td>진행일</td><td>참석자</td><td>제목</td><td>작성일</td><td>작성자</td></tr>";		
+  		
   		$.ajax({
   			url:"ajaxList",
   			type:"post",
@@ -166,56 +177,44 @@
   				s_mm:mm
   			},			
   			success:function(result){
-  				$("#middle_right").html(result);
-  			 	//list받아온 것 저장
-  				var subject_yy=document.getElementsByClassName("s_year");
-  				var subject_mm=document.getElementsByClassName("s_month");
-  				var subject_dd=document.getElementsByClassName("s_day");
-  				var title=document.getElementsByClassName("s_title");
-  				var m_id=document.getElementsByClassName("m_id");
-  				var contents=document.getElementsByClassName("s_contents");	
-  				var s_date=document.getElementsByClassName("s_date");
-  				var joinmem=document.getElementsByClassName("s_joinmem");
-  			},
+  				$(result).each(function(){
+  					load_subject +="<tr>";
+  					load_subject +="<td><input type='hidden' class='s_year' id='s_yy' value="+this.s_yy+">"+this.s_yy;
+  					load_subject +="-<input type='hidden' id='s_mm' class='s_month' value="+this.s_mm+">"+this.s_mm;
+  					load_subject +="-<input type='hidden' id='s_dd' class='s_day' value="+this.s_dd+">"+this.s_dd+"</td>";
+  					load_subject +="<td><input type='hidden' class='s_joinmem' value="+this.s_Joinmem+">"+this.s_Joinmem+"</td>";
+  					load_subject +="<td><input type='hidden' class='s_title' value="+this.s_Title+">"+this.s_Title+"</td>";
+  					load_subject +="<td><input type='hidden' class='s_date' value="+this.s_Date+">"+this.s_Date+"</td>";
+  					load_subject +="<td><input type='hidden' class='m_id' value="+this.m_Id+">"+this.m_Id;
+  					load_subject +="<input type='hidden' class='s_contents' value="+this.s_Contents+"></td></tr>";
+  					load_subject +="</tr>";
+  				});
+  					load_subject +="</table>";
+  					middle.innerHTML = load_subject;
+ 			 document.getElementById("year").value = yy;
+  		 	 document.getElementById("month").value = mm;
+ 			 showmethe();
+  			}
   		});
   		
- 	 document.getElementById("year").value = yy;
-     document.getElementById("month").value = mm;
-     showmethe();
  }
 
- //일정입력하기
+ //일정입력할때 참석자 값 넘기기
  function setSubject(){
 	 var join="";
-	   $('#mem:checked').each(function() { 
+	   $('#mem:checked').each(function(){ 
 	       join=join+$(this).val()+" ";
 	   });
-	   alert(join);
-	   alert($("#m_id").val());
-	   
-	 $.ajax({
-		url:"setSubject",
-		type:"post",
-		data:{		
-			m_Id:$("#m_id").val(),
-			g_Num:$("#g_num").val(),
-			s_Joinmem:join,
-			s_Title:$("#s_title").val(),
-			s_Contents:$("#s_contents").val(),
-			s_yy:$("#s_yy").val(),
-			s_mm:$("#s_mm").val(),
-			s_dd:$("#s_dd").val()
-		},
-		success:function(result){
-			alert(result);
-		}		
-	 });
+	   $("#td_joinmem").val(join);   
  }
  	
  //클릭한 날짜로 모달의 value값 주기
   function getDate(yyy,mmm,ddd){
 	var inputday=yyy+"년 "+mmm+"월 "+ddd+"일";
 	$("#s_date").val(inputday);
+	$("#ss_yy").val(yyy);
+	$("#ss_mm").val(mmm);
+	$("#ss_dd").val(ddd);
 	
 	var ck=true;
 	
@@ -280,9 +279,18 @@
 	}
 
  function showmethe(){ // 다 로드되고 바로 시작되는 함수
-  var yy = document.getElementById("year").value;  // 년도와 달을 불러온다
-  var mm = document.getElementById("month").value;
-  var show = document.getElementById("show"); //  출력할 곳 div태그
+    var yy = document.getElementById("year").value;  // 년도와 달을 불러온다
+    var mm = document.getElementById("month").value;
+    var show = document.getElementById("show"); //  출력할 곳 div태그
+    
+	subject_yy=document.getElementsByClassName("s_year");
+	subject_mm=document.getElementsByClassName("s_month");
+	subject_dd=document.getElementsByClassName("s_day");
+	title=document.getElementsByClassName("s_title");
+	m_id=document.getElementsByClassName("m_id");
+	contents=document.getElementsByClassName("s_contents");	
+	s_date=document.getElementsByClassName("s_date");
+	joinmem=document.getElementsByClassName("s_joinmem");
 
   var sum = "<table id='calendar' class='table table-bordered' align='center'>";
    sum += "<tr>";
@@ -311,7 +319,8 @@
 			   var ch = true;
 			   for(var j=0;j<subject_dd.length;j++){
 			      if(subject_yy[j].value == yy && subject_mm[j].value == mm && subject_dd[j].value == i){
-			         sum += "<td align='center'>"+"<button type='button' onclick='getDate("+yy+","+mm+","+i+")' class='btn btn-link dd' value="+i +" data-toggle='modal' data-target='#add'>"+i+"<br><img src='<%=request.getContextPath()%>/resources/img/subject/check.png'>"+"</td>";
+		         
+			    	  sum += "<td align='center'>"+"<button type='button' onclick='getDate("+yy+","+mm+","+i+")' class='btn btn-link dd' value="+i +" data-toggle='modal' data-target='#add'>"+i+"<br><img src='<%=request.getContextPath()%>/resources/img/subject/check.png'>"+"</td>";
 			         ch = false;
 			      }   
 			   }

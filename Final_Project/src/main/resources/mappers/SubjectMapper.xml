@@ -9,7 +9,7 @@
 	<insert id="record" parameterType="com.eteam.gstudy.Group_SubjectDTO">
 		insert into group_study
 		values
-		(4, #{g_Num}, #{m_Id}, sysdate, #{s_Joinmem}, #{s_Title}, #{s_Contents}, #{s_yy}, #{s_mm}, #{s_dd})
+		(g_study_seq.nextval, #{g_Num}, #{m_Id}, sysdate, #{s_Joinmem}, #{s_Title}, #{s_Contents}, #{s_yy}, #{s_mm}, #{s_dd})
 	</insert> 
 
 	<select id="search" resultType="com.eteam.groupInfo.Group_JoinDTO">
