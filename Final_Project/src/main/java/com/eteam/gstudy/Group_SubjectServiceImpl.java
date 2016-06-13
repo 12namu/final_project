@@ -17,6 +17,23 @@ public class Group_SubjectServiceImpl implements Group_SubjectService {
 	Group_SubjectDAOImpl subjectDAO;
 	
 	@Override
+	public int delete(int yyy, int mmm, int ddd) {
+		HashMap<String, Integer> de_hs=new HashMap<String, Integer>();
+		de_hs.put("yyy", yyy);
+		de_hs.put("mmm", mmm);
+		de_hs.put("ddd", ddd);
+		int result=0;
+		try {
+			result=subjectDAO.delete(de_hs);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	
+	@Override
 	public int record(Group_SubjectDTO g_sdto) {
 		int result=0;
 		try {

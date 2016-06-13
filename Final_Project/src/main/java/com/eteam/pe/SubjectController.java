@@ -30,6 +30,12 @@ public class SubjectController {
 	@Inject
 	Group_SubjectService subjectService;
 	
+	@RequestMapping(value="/deleteSubject", method=RequestMethod.POST)
+	public String deleteSubject(@RequestParam("s_yy") int yyy,@RequestParam("s_mm") int mmm, @RequestParam("s_dd") int ddd ){
+		int result=subjectService.delete(yyy, mmm, ddd);
+		return "redirect:getList?g_num=0";
+	
+	}
 	
 	@RequestMapping(value="/setSubject", method=RequestMethod.POST)
 	public String set(Group_SubjectDTO sdto,MakePage makepage,RedirectAttributes redirect,HttpServletRequest request){
@@ -40,22 +46,38 @@ public class SubjectController {
 			e.printStackTrace();
 		}
 		
-		System.out.println(sdto.getS_Joinmem());
 		int result=subjectService.record(sdto);	
 	
 		makepage.setYy(sdto.getS_yy());
 		makepage.setMm(sdto.getS_mm());
 		List<Group_SubjectDTO> list=subjectService.listSubject(sdto.getG_Num(), makepage);
 		redirect.addFlashAttribute("list", list);
-		return "redirect:getList?g_num=0";
+		return "redirect:getList?g_num=0&s_yy="+sdto.getS_yy()+"&s_mm="+sdto.getS_mm()+"";
 	}
 	
 	@RequestMapping(value="/getList")
-	public ModelAndView list(@RequestParam("g_num") int g_num, MakePage makepage){
-		makepage.setDate();
+	public ModelAndView list(@RequestParam("g_num") int g_num, @RequestParam(defaultValue="1", name="s_yy")int s_yy, @RequestParam(defaultValue="1", name="s_mm") int s_mm, MakePage makepage){
+		
+		if(s_yy==1 && s_mm==1){
+			makepage.setDate();		
+		}else{
+			makepage.setYy(s_yy);
+			makepage.setMm(s_mm);
+		}
+		
 		List<Group_SubjectDTO> list=subjectService.listSubject(g_num,makepage);
 		ModelAndView mv=new ModelAndView();
+		
 		mv.addObject("list", list);
+		
+		if(s_yy==1 && s_mm==1){
+			mv.addObject("m_yy", makepage.getYy());
+			mv.addObject("m_mm", makepage.getMm());
+		}else{
+			mv.addObject("m_yy", s_yy);
+			mv.addObject("m_mm", s_mm);
+		}
+
 		mv.setViewName("subject/list");
 		return mv;
 	}

@@ -20,6 +20,13 @@ public class Group_SubjectDAOImpl implements Group_SubjectDAO {
 	private static final String NAMESPACE="SubjectMapper.";
 
 	@Override
+	public int delete(HashMap<String, Integer> de_hs) throws Exception {
+		return sqlSession.delete(NAMESPACE+"delete", de_hs);
+		
+	}
+	
+	
+	@Override
 	public int record(Group_SubjectDTO g_sdto) throws Exception {
 		return sqlSession.insert(NAMESPACE+"record", g_sdto);
 	}

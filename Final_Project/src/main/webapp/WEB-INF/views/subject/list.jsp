@@ -14,16 +14,16 @@
 <%@ include file="../comm/header.jsp" %>
 
 <div id="middle">
-	<input type="hidden" id="year">
- 	<input type="hidden" id="month">
- 	<input type="hidden" id="date"> 
- 
+	<input type="hidden" id="m_yy" value="${m_yy}">
+		<input type="hidden" id="m_mm" value="${m_mm}">
+
+
  <div id="show"></div>
 	
 	<div id="middle_right">
 		<table class="table table-bordered">
 			<tr>
-			<td>진행일</td><td>참석자</td><td>제목</td><td>작성일</td><td>작성자</td>
+			<td>진행일</td><td>참석자</td><td>제목</td><td>작성일</td><td>작성자</td><td>삭제</td>
 			</tr>
 			<c:forEach items="${list}" var="i">
 			<tr>
@@ -34,9 +34,12 @@
 				<td><input type="hidden" class="m_id" value="${i.m_Id}">${i.m_Id}
 					<input type="hidden" class="s_contents" value="${i.s_Contents}">
 				</td>
+				<td><button type="button"  class="btn btn-danger" onclick='deleteSubject(${i.s_yy},${i.s_mm},${i.s_dd})'>삭제</button></td>
 			</tr>
 			</c:forEach>
 		</table>
+		<input type="hidden" id="m_yy" value="${m_yy}">
+		<input type="hidden" id="m_mm" value="${m_mm}">
 	</div>
 	 
  </div><!--middle-->
@@ -49,7 +52,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="gridSystemModalLabel">모임추가</h4>
+        <h4 class="modal-title" id="gridSystemModalLabel">모임추가 </h4>
       </div>
   		
   	<form action="./setSubject" method="post">
@@ -80,6 +83,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <span id="alterbtn"></span>
         <button type="submit" class='btn btn-warning' onclick='setSubject()'>작성완료</button>
       </div>
       </form>
@@ -94,13 +98,10 @@
 
 <script type="text/javascript">
 
- var today = new Date();           // 오늘거 받아온
- var year = today.getFullYear();   // 년도
- var month = today.getMonth();     // 달
- var day = today.getDate();
  
- document.getElementById("year").value = year;  // 이 녀석을 셋팅해준다. ( 이 친구들이 달력의 년도와 달 정보를 담는 변수 정도로 생각 하면 됭 ~ )  
- document.getElementById("month").value = month+1; // 이 녀석을 셋팅해준다.
+ var yy = document.getElementById("m_yy").value;  // 년도와 달을 불러온다
+ var mm = document.getElementById("m_mm").value;
+ 
  
 	var subject_yy=document.getElementsByClassName("s_year");
 	var subject_mm=document.getElementsByClassName("s_month");
@@ -114,16 +115,16 @@
  
  function prev() { // 지난달 
   var middle = document.getElementById("middle_right");
-  var yy = document.getElementById("year").value;
-  var mm = document.getElementById("month").value;
+  var yy = $("#m_yy").val();
+  var mm = $("#m_mm").val();
   		mm--;
   		if(mm <= 0){
   			 mm = 12;
   			 yy--;
-  }
+		  }
   		
   	var load_subject1 ="<table class='table table-bordered'><tr>";
-  		load_subject1 +="<td>진행일</td><td>참석자</td><td>제목</td><td>작성일</td><td>작성자</td></tr>";	
+  		load_subject1 +="<td>진행일</td><td>참석자</td><td>제목</td><td>작성일</td><td>작성자</td><td>삭제</td></tr>";	
 	
 		$.ajax({
 			url:"ajaxList",
@@ -143,13 +144,14 @@
 				load_subject1 +="<td><input type='hidden' class='s_title' value="+this.s_Title+">"+this.s_Title+"</td>";
 				load_subject1 +="<td><input type='hidden' class='s_date' value="+this.s_Date+">"+this.s_Date+"</td>";
 				load_subject1 +="<td><input type='hidden' class='m_id' value="+this.m_Id+">"+this.m_Id;
-				load_subject1 +="<input type='hidden' class='s_contents' value="+this.s_Contents+"></td></tr>";
+				load_subject1 +="<input type='hidden' class='s_contents' value="+this.s_Contents+"></td>";
+				load_subject1 +="<td><button type='button'  class='btn btn-danger' onclick='deleteSubject("+this.s_yy+","+this.s_mm+","+this.s_dd+")'>삭제</button></td>";			
 				load_subject1 +="</tr>";
 			});
 				load_subject1 +="</table>";
 				middle.innerHTML = load_subject1;
-  		document.getElementById("year").value = yy;
-		document.getElementById("month").value = mm;
+				$("#m_yy").val(yy);
+				$("#m_mm").val(mm);
      	showmethe(); 
 		}
 	});
@@ -158,15 +160,15 @@
 
  function next() { // 다음달
 	 var middle = document.getElementById("middle_right");
- 	 var yy = document.getElementById("year").value;
- 	 var mm = document.getElementById("month").value;
+	 var yy = $("#m_yy").val();
+	  var mm = $("#m_mm").val();
  		 mm++;
   		if(mm > 12){
  			  mm = 1;
 			  yy++;
   			}
   		var load_subject ="<table class='table table-bordered'><tr>";
-  			load_subject +="<td>진행일</td><td>참석자</td><td>제목</td><td>작성일</td><td>작성자</td></tr>";		
+  			load_subject +="<td>진행일</td><td>참석자</td><td>제목</td><td>작성일</td><td>작성자</td><td>삭제</td></tr>";		
   		
   		$.ajax({
   			url:"ajaxList",
@@ -186,19 +188,36 @@
   					load_subject +="<td><input type='hidden' class='s_title' value="+this.s_Title+">"+this.s_Title+"</td>";
   					load_subject +="<td><input type='hidden' class='s_date' value="+this.s_Date+">"+this.s_Date+"</td>";
   					load_subject +="<td><input type='hidden' class='m_id' value="+this.m_Id+">"+this.m_Id;
-  					load_subject +="<input type='hidden' class='s_contents' value="+this.s_Contents+"></td></tr>";
+  					load_subject +="<input type='hidden' class='s_contents' value="+this.s_Contents+"></td>";
+  					load_subject +="<td><button type='button'  class='btn btn-danger' onclick='deleteSubject("+this.s_yy+","+this.s_mm+","+this.s_dd+")'>삭제</button></td>";			
   					load_subject +="</tr>";
   				});
   					load_subject +="</table>";
   					middle.innerHTML = load_subject;
- 			 document.getElementById("year").value = yy;
-  		 	 document.getElementById("month").value = mm;
- 			 showmethe();
+  					$("#m_yy").val(yy);
+  					$("#m_mm").val(mm);
+ 					 showmethe();
   			}
   		});
   		
  }
 
+ function deleteSubject(yyy,mmm,ddd){
+	 $.ajax({
+		url:"deleteSubject",
+		type:"post",
+		data:{
+			s_yy:yyy,
+			s_mm:mmm,
+			s_dd:ddd
+		},
+		success:function(result){
+			alert("삭제");
+			location.href="getList?g_num=0&s_yy="+yyy+"&s_mm="+mmm+"";
+		},	 
+	 });	 
+ }
+ 
  //일정입력할때 참석자 값 넘기기
  function setSubject(){
 	 var join="";
@@ -222,19 +241,28 @@
 		if(subject_yy[i].value==yyy && subject_mm[i].value==mmm && subject_dd[i].value==ddd){
 			$("#gridSystemModalLabel").html("모임조회");
 			$("#m_id").val(m_id[i].value);
+			$("#m_id").attr("readonly","readonly");
+			
 			$("#s_title").val(title[i].value);
+			$("#s_title").attr("readonly","readonly");
+			
 			$("#s_contents").html(contents[i].value);
-			$("#tdMem").html(joinmem[i].value+"&nbsp;&nbsp;<button type='button' onclick='alterMember()' class='btn btn-warning'>수정하기</button>");
+			$("#s_contents").attr("readonly","readonly");
+			
+			$("#tdMem").html(joinmem[i].value+"&nbsp;&nbsp;");
+			$("#alterbtn").html("<button type='button' onclick='alterMember("+yyy+","+mmm+","+ddd+")' class='btn btn-warning'>수정하기</button>");
 			
 			ck=false;
 			}		
 		}
 		if(ck){
 			$("#gridSystemModalLabel").html("모임추가");
+			$("#alterbtn").html("");
 			//그룹멤버 불러오기
 			SearchMember();		
 		}//if문 끝
 	}//function 끝
+	
 	
 	//참석회원 수정
 	function alterMember(){
@@ -248,9 +276,11 @@
 			success:function(result){
 				$("#tdMem").html("");
 				$(result).each(function(){	
-					$("#tdMem").append("&nbsp;&nbsp;"+"&nbsp;<input type='checkbox' name='s_joinmem' class='s_joinmem' id='mem' value="+this.m_id+">"+this.m_id)		
+					$("#tdMem").append("&nbsp;&nbsp;"+"&nbsp;<input type='checkbox' name='s_joinmem' class='s_joinmem' id='mem' value="+this.m_id+">"+this.m_id);
 				});
-				
+				$("#m_id").attr('readonly', false);
+				$("#s_title").attr('readonly', false);
+				$("#s_contents").attr('readonly', false);
 			},
 			}); 		
 		}
@@ -279,8 +309,8 @@
 	}
 
  function showmethe(){ // 다 로드되고 바로 시작되는 함수
-    var yy = document.getElementById("year").value;  // 년도와 달을 불러온다
-    var mm = document.getElementById("month").value;
+    var yy = document.getElementById("m_yy").value;  // 년도와 달을 불러온다
+    var mm = document.getElementById("m_mm").value;
     var show = document.getElementById("show"); //  출력할 곳 div태그
     
 	subject_yy=document.getElementsByClassName("s_year");
@@ -318,22 +348,20 @@
 			//일 뿌려주는 곳          
 			   var ch = true;
 			   for(var j=0;j<subject_dd.length;j++){
-			      if(subject_yy[j].value == yy && subject_mm[j].value == mm && subject_dd[j].value == i){
-		         
+			      if(subject_yy[j].value == yy && subject_mm[j].value == mm && subject_dd[j].value == i){	         
 			    	  sum += "<td align='center'>"+"<button type='button' onclick='getDate("+yy+","+mm+","+i+")' class='btn btn-link dd' value="+i +" data-toggle='modal' data-target='#add'>"+i+"<br><img src='<%=request.getContextPath()%>/resources/img/subject/check.png'>"+"</td>";
 			         ch = false;
 			      }   
 			   }
 			   if(ch){
-			      sum += "<td align='center'>"+"<button type='button' onclick='getDate("+yy+","+mm+","+i+")' class='btn btn-link dd' value="+i +" data-toggle='modal' data-target='#add'>"+i+"</td>";  
-			      
+			      sum += "<td align='center'>"+"<button type='button' onclick='getDate("+yy+","+mm+","+i+")' class='btn btn-link dd' value="+i +" data-toggle='modal' data-target='#add'>"+i+"</td>";  			      
 			   }
 		
 		   
 	   if(new Date(yy,mm-1,i).getDay() == 6){  // 토요일이면 행 바꿔주고
     	 sum += "</tr>";
      if(i != m[m-1]){ // 달마지막과 i 값을 비교하여 같지 않다면 새로운 행을 시작한다.
-    	  sum += "<tr>"
+    	  sum += "<tr>";
      }
     }
    } //for문 끝
@@ -345,11 +373,13 @@
      sum += "<td>&nbsp;</td>";
     }
    }
-
-   sum += "</tr>"
+   
+   sum += "</tr>";
    sum += "</table>";
+   
    show.innerHTML = sum;
  }
+
 
 </script>
 

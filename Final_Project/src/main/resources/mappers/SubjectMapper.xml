@@ -6,6 +6,11 @@
 
 <mapper namespace="SubjectMapper">
 
+	<delete id="delete" parameterType="hashmap">
+		delete from group_study where
+		s_yy=#{yyy} and s_mm=#{mmm} and s_dd=#{ddd}
+	</delete>
+
 	<insert id="record" parameterType="com.eteam.gstudy.Group_SubjectDTO">
 		insert into group_study
 		values

@@ -7,6 +7,8 @@ import com.eteam.groupInfo.Group_JoinDTO;
 
 public interface Group_SubjectDAO {
 
+	public int delete(HashMap<String,Integer> de_hs) throws Exception;
+	
 	public List<Group_JoinDTO> search(int g_num) throws Exception;
 	
 	public List<Group_SubjectDTO> listSubject(HashMap<String,Integer> hs) throws Exception;
