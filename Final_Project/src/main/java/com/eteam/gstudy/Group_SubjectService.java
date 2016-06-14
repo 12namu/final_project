@@ -7,6 +7,8 @@ import com.eteam.groupInfo.Group_JoinDTO;
 
 public interface Group_SubjectService {
 	
+	public int alter(Group_SubjectDTO g_sdto,int yyy, int mmm, int ddd);
+	
 	public int delete(int yyy, int mmm, int ddd);
 		
 	public List<Group_JoinDTO> search(int g_num);

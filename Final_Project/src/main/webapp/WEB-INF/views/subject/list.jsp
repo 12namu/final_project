@@ -5,10 +5,10 @@
 <head>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <title>스터디그룹</title>
-
 <link rel="stylesheet" href="<%=application.getContextPath()%>/resources/css/subject/list.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
 </head>
+
 <body onload="showmethe()">
 	
 <%@ include file="../comm/header.jsp" %>
@@ -18,8 +18,7 @@
 		<input type="hidden" id="m_mm" value="${m_mm}">
 
 
- <div id="show"></div>
-	
+ <div id="show"></div>	
 	<div id="middle_right">
 		<table class="table table-bordered">
 			<tr>
@@ -29,7 +28,7 @@
 			<tr>
 				<td><input type="hidden" class="s_year" id="s_yy" value="${i.s_yy}">${i.s_yy}-<input type="hidden" id="s_mm" class="s_month" value="${i.s_mm}">${i.s_mm}-<input type="hidden" id="s_dd" class="s_day" value="${i.s_dd}">${i.s_dd}</td>
 				<td><input type="hidden" class="s_joinmem" value="${i.s_Joinmem}">${i.s_Joinmem}</td>
-				<td><input type="hidden" class="s_title" value="${i.s_Title}">${i.s_Title}</td>
+				<td><input type="hidden" class="s_title" value="${i.s_Title}"><button type='button' onclick='getDate(${i.s_yy},${i.s_mm},${i.s_dd})' class='btn btn-link dd' value="+i +" data-toggle='modal' data-target='#add'>${i.s_Title}</td>
 				<td><input type="hidden" class="s_date" value="${i.s_Date}">${i.s_Date}</td>
 				<td><input type="hidden" class="m_id" value="${i.m_Id}">${i.m_Id}
 					<input type="hidden" class="s_contents" value="${i.s_Contents}">
@@ -84,7 +83,7 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <span id="alterbtn"></span>
-        <button type="submit" class='btn btn-warning' onclick='setSubject()'>작성완료</button>
+        <span id="span_setbtn"><button type="submit" class='btn btn-warning' onclick='setSubject()'>작성완료</button></span>
       </div>
       </form>
       
@@ -124,7 +123,7 @@
 		  }
   		
   	var load_subject1 ="<table class='table table-bordered'><tr>";
-  		load_subject1 +="<td>진행일</td><td>참석자</td><td>제목</td><td>작성일</td><td>작성자</td><td>삭제</td></tr>";	
+  		load_subject1 +="<td>진행일</td><td>참석자</td><td>제목</td><td>작성일</td><td>작성자</td><td>삭제</td></tr>";	 
 	
 		$.ajax({
 			url:"ajaxList",
@@ -141,7 +140,9 @@
 				load_subject1 +="-<input type='hidden' id='s_mm' class='s_month' value="+this.s_mm+">"+this.s_mm;
 				load_subject1 +="-<input type='hidden' id='s_dd' class='s_day' value="+this.s_dd+">"+this.s_dd+"</td>";
 				load_subject1 +="<td><input type='hidden' class='s_joinmem' value="+this.s_Joinmem+">"+this.s_Joinmem+"</td>";
-				load_subject1 +="<td><input type='hidden' class='s_title' value="+this.s_Title+">"+this.s_Title+"</td>";
+				load_subject1 +="<td><input type='hidden' class='s_title' value="+this.s_Title+">";
+				load_subject1 +="<button type='button' onclick='getDate("+this.s_yy+","+this.s_mm+","+this.s_dd+")' class='btn btn-link dd' data-toggle='modal' data-target='#add'>";	
+  				load_subject1 += this.s_Title+"</td>";
 				load_subject1 +="<td><input type='hidden' class='s_date' value="+this.s_Date+">"+this.s_Date+"</td>";
 				load_subject1 +="<td><input type='hidden' class='m_id' value="+this.m_Id+">"+this.m_Id;
 				load_subject1 +="<input type='hidden' class='s_contents' value="+this.s_Contents+"></td>";
@@ -152,11 +153,12 @@
 				middle.innerHTML = load_subject1;
 				$("#m_yy").val(yy);
 				$("#m_mm").val(mm);
-     	showmethe(); 
+     			showmethe(); 
 		}
 	});
 
  }
+
 
  function next() { // 다음달
 	 var middle = document.getElementById("middle_right");
@@ -167,17 +169,18 @@
  			  mm = 1;
 			  yy++;
   			}
+  		
   		var load_subject ="<table class='table table-bordered'><tr>";
   			load_subject +="<td>진행일</td><td>참석자</td><td>제목</td><td>작성일</td><td>작성자</td><td>삭제</td></tr>";		
   		
-  		$.ajax({
-  			url:"ajaxList",
-  			type:"post",
-  			data:{
-  				g_num:0,
-  				s_yy:yy,
-  				s_mm:mm
-  			},			
+  	  		$.ajax({
+  				url:"ajaxList",
+  				type:"post",
+  				data:{
+  					g_num:0,
+  					s_yy:yy,
+  					s_mm:mm
+  				},
   			success:function(result){
   				$(result).each(function(){
   					load_subject +="<tr>";
@@ -185,7 +188,9 @@
   					load_subject +="-<input type='hidden' id='s_mm' class='s_month' value="+this.s_mm+">"+this.s_mm;
   					load_subject +="-<input type='hidden' id='s_dd' class='s_day' value="+this.s_dd+">"+this.s_dd+"</td>";
   					load_subject +="<td><input type='hidden' class='s_joinmem' value="+this.s_Joinmem+">"+this.s_Joinmem+"</td>";
-  					load_subject +="<td><input type='hidden' class='s_title' value="+this.s_Title+">"+this.s_Title+"</td>";
+  					load_subject +="<td><input type='hidden' class='s_title' value="+this.s_Title+">";
+  					load_subject +="<button type='button' onclick='getDate("+this.s_yy+","+this.s_mm+","+this.s_dd+")' class='btn btn-link dd' data-toggle='modal' data-target='#add'>";	
+  					load_subject += this.s_Title+"</td>";
   					load_subject +="<td><input type='hidden' class='s_date' value="+this.s_Date+">"+this.s_Date+"</td>";
   					load_subject +="<td><input type='hidden' class='m_id' value="+this.m_Id+">"+this.m_Id;
   					load_subject +="<input type='hidden' class='s_contents' value="+this.s_Contents+"></td>";
@@ -196,12 +201,37 @@
   					middle.innerHTML = load_subject;
   					$("#m_yy").val(yy);
   					$("#m_mm").val(mm);
- 					 showmethe();
+  	     		showmethe(); 
   			}
   		});
   		
  }
-
+ 
+//일정 수정하기
+	function alterSubject(yyy,mmm,ddd){
+		setSubject();
+		$.ajax({
+			url:"alterSubject",
+			type:"post",
+			data:{
+				s_yy:yyy,
+				s_mm:mmm,
+				s_dd:ddd,
+				s_Title:$("#s_title").val(),
+				s_Contents:$("#s_contents").val(),
+				s_Joinmem:$("#td_joinmem").val()
+			},
+			success:function(result){
+				alert("수정성공");
+				location.href="getList?g_num=0&s_yy="+yyy+"&s_mm="+mmm+"";
+			}
+			
+		});
+		
+	
+}
+ 
+//일정지우기
  function deleteSubject(yyy,mmm,ddd){
 	 $.ajax({
 		url:"deleteSubject",
@@ -227,6 +257,7 @@
 	   $("#td_joinmem").val(join);   
  }
  	
+ 
  //클릭한 날짜로 모달의 value값 주기
   function getDate(yyy,mmm,ddd){
 	var inputday=yyy+"년 "+mmm+"월 "+ddd+"일";
@@ -241,7 +272,6 @@
 		if(subject_yy[i].value==yyy && subject_mm[i].value==mmm && subject_dd[i].value==ddd){
 			$("#gridSystemModalLabel").html("모임조회");
 			$("#m_id").val(m_id[i].value);
-			$("#m_id").attr("readonly","readonly");
 			
 			$("#s_title").val(title[i].value);
 			$("#s_title").attr("readonly","readonly");
@@ -251,21 +281,24 @@
 			
 			$("#tdMem").html(joinmem[i].value+"&nbsp;&nbsp;");
 			$("#alterbtn").html("<button type='button' onclick='alterMember("+yyy+","+mmm+","+ddd+")' class='btn btn-warning'>수정하기</button>");
-			
+			$("#span_setbtn").html("");
 			ck=false;
 			}		
 		}
 		if(ck){
 			$("#gridSystemModalLabel").html("모임추가");
 			$("#alterbtn").html("");
+			$("#s_title").attr('readonly', false);
+			$("#s_contents").attr('readonly', false);
+			$("#span_setbtn").html("<button type='submit' class='btn btn-warning' onclick='setSubject()'>작성완료</button>");
 			//그룹멤버 불러오기
 			SearchMember();		
 		}//if문 끝
 	}//function 끝
 	
 	
-	//참석회원 수정
-	function alterMember(){
+	//일정조회, 수정연결
+	function alterMember(yyy,mmm,ddd){
 		$.ajax({
 			url:"searchGMember",
 			type:"post",
@@ -278,9 +311,12 @@
 				$(result).each(function(){	
 					$("#tdMem").append("&nbsp;&nbsp;"+"&nbsp;<input type='checkbox' name='s_joinmem' class='s_joinmem' id='mem' value="+this.m_id+">"+this.m_id);
 				});
-				$("#m_id").attr('readonly', false);
+/* 				$("#m_id").attr('readonly', false); */
 				$("#s_title").attr('readonly', false);
 				$("#s_contents").attr('readonly', false);
+				$("#alterbtn").html("");
+				$("#span_setbtn").html("<button type='button' onclick='alterSubject("+yyy+","+mmm+","+ddd+")' class='btn btn-warning'>수정완료</button>");			
+				
 			},
 			}); 		
 		}

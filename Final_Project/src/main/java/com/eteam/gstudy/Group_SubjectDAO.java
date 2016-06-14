@@ -6,6 +6,9 @@ import java.util.List;
 import com.eteam.groupInfo.Group_JoinDTO;
 
 public interface Group_SubjectDAO {
+	
+	
+	public int alter(HashMap<String,Object> al_hs) throws Exception;
 
 	public int delete(HashMap<String,Integer> de_hs) throws Exception;
 	

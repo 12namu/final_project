@@ -16,6 +16,27 @@ public class Group_SubjectServiceImpl implements Group_SubjectService {
 	@Inject
 	Group_SubjectDAOImpl subjectDAO;
 	
+	
+	@Override
+	public int alter(Group_SubjectDTO g_sdto, int yyy, int mmm, int ddd) {
+		HashMap<String, Object> al_hs=new HashMap<String, Object>();
+		al_hs.put("yyy", yyy);
+		al_hs.put("mmm", mmm);
+		al_hs.put("ddd", ddd);
+		al_hs.put("s_title", g_sdto.getS_Title());
+		al_hs.put("s_contents", g_sdto.getS_Contents());
+		al_hs.put("s_joinmem", g_sdto.getS_Joinmem());
+		int result=0;
+		try {
+			result=subjectDAO.alter(al_hs);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	
 	@Override
 	public int delete(int yyy, int mmm, int ddd) {
 		HashMap<String, Integer> de_hs=new HashMap<String, Integer>();

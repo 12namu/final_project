@@ -30,9 +30,20 @@ public class SubjectController {
 	@Inject
 	Group_SubjectService subjectService;
 	
+	
+	@RequestMapping(value="/alterSubject", method=RequestMethod.POST)
+	public String alterSubject(Group_SubjectDTO sdto, @RequestParam("s_yy")int yyy, @RequestParam("s_mm") int mmm, @RequestParam("s_dd") int ddd){
+		int result=subjectService.alter(sdto, yyy, mmm, ddd);
+		System.out.println("수정: "+result);
+		return "redirect:getList?g_num=0";				
+	}
+	
+	
+	
 	@RequestMapping(value="/deleteSubject", method=RequestMethod.POST)
 	public String deleteSubject(@RequestParam("s_yy") int yyy,@RequestParam("s_mm") int mmm, @RequestParam("s_dd") int ddd ){
 		int result=subjectService.delete(yyy, mmm, ddd);
+		System.out.println("삭제: "+result);
 		return "redirect:getList?g_num=0";
 	
 	}

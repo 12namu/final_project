@@ -5,6 +5,13 @@
   
 
 <mapper namespace="SubjectMapper">
+	
+	<update id="alter" parameterType="hashmap">
+		update group_study set
+		s_title=#{s_title},s_contents=#{s_contents},s_joinmem=#{s_joinmem}
+		where 
+		s_yy=#{yyy} and s_mm=#{mmm} and s_dd=#{ddd}
+	</update>
 
 	<delete id="delete" parameterType="hashmap">
 		delete from group_study where
@@ -24,4 +31,5 @@
 	<select id="listSubject" parameterType="hashmap" resultType="com.eteam.gstudy.Group_SubjectDTO">
 		select * from group_study where g_num=#{g_num} and s_yy=#{yy} and s_mm=#{mm} order by s_dd desc 
 	</select>
+	
 </mapper>
