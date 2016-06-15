@@ -1,25 +1,44 @@
 package com.eteam.message;
 
+import java.sql.Date;
+
 public class Receive_messageDTO {
-	private int m_Num;
-    private String receive_Id;
-    private String m_Contents;
-	public int getM_Num() {
-		return m_Num;
+	private int m_num;
+    private String receive_id;
+    private String r_title;
+    private String m_contents;
+    private Date r_date;
+    
+	public int getM_num() {
+		return m_num;
 	}
-	public void setM_Num(int m_Num) {
-		this.m_Num = m_Num;
+	public void setM_num(int m_num) {
+		this.m_num = m_num;
 	}
-	public String getReceive_Id() {
-		return receive_Id;
+	public String getReceive_id() {
+		return receive_id;
 	}
-	public void setReceive_Id(String receive_Id) {
-		this.receive_Id = receive_Id;
+	public void setReceive_id(String receive_id) {
+		this.receive_id = receive_id;
 	}
-	public String getM_Contents() {
-		return m_Contents;
+	public String getR_title() {
+		return r_title;
 	}
-	public void setM_Contents(String m_Contents) {
-		this.m_Contents = m_Contents;
+	public void setR_title(String r_title) {
+		this.r_title = r_title;
 	}
+	public String getM_contents() {
+		return m_contents;
+	}
+	public void setM_contents(String m_contents) {
+		this.m_contents = m_contents;
+	}
+	public Date getR_date() {
+		return r_date;
+	}
+	public void setR_date(Date r_date) {
+		this.r_date = r_date;
+	}
+    
+    
 }

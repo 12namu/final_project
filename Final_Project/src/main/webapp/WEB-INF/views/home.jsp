@@ -26,10 +26,13 @@
 <div id="middle">
 	<div id="middle_box1">
 		<div id="realtime">
+		</div>
+		<div id="search_img">
+			<img src="<%=application.getContextPath()%>/resources/img/common/index/img1.png">
 		
+		</div>		
 		<a href="./subject/getList?g_num=0">캘린더가기</a>
 
-		</div>
 	</div>
 	
 	
