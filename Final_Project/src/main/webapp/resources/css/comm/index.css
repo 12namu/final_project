@@ -1,5 +1,9 @@
 @CHARSET "UTF-8";
 
+.body{
+	width:100%;
+}
+
 #middle{
 	width:100%;
 	height:712px;
@@ -8,7 +12,7 @@
 
 #middle_box1{
 	width:100%;
-	height: 270px;
+	height: 150px;
 	/* background-image:url(../../img/common/index/backimg1_3.jpg); */
 	background-color: #ef8245;
 	background-size:100%;
@@ -18,19 +22,27 @@
 
 #middle_box2{
 	width:100%;
-	height: 490px;
-	background-color: #41464d;
+	height: 600px;
+	background-color: white;
 }
 
-#input_box{
-	width:40%;
+#search_box{
+	width: 25%;
 	padding-top: 4%;
 	margin:0 auto;
 }
 
 
-#form1{
-	width:80%;
-	float:left;
-	margin:0 auto;
+.btn-group{
+	margin-left:1%;
+}
+
+#img_box{
+	width: 32%;
+	 margin: 0 auto;
+}
+
+.img-circle{
+	width:150px;
+	height: 150px;
 }
