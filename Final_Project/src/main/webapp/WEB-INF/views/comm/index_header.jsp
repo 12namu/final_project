@@ -24,9 +24,15 @@
 
 	<div id="t1_1_ul">
 		<ul class="list-inline">
-			<li><a href=""><span class="sp1">로그인</span></a></li>
-			<li><a href=""><span class="sp1">회원가입</span></a></li>
-			<li><a href=""><span class="sp1">고객센터</span></a></li>
+		<c:if test="${member eq null}">
+			<li><a href="${pageContext.request.contextPath}/member/joinform"><span class="sp1">회원가입</span></a></li>
+			<li><a href="${pageContext.request.contextPath}/member/loginform"><span class="sp1">로그인</span></a></li>
+			</c:if>
+			<c:if test ="${member ne null}">
+				<li><a href="${pageContext.request.contextPath}/member/logout"><span class="sp1">로그아웃</span></a></li>
+				<li><a href="${pageContext.request.contextPath}/member/mypage?m_Id=${member.m_Id}"><span class="sp1">마이페이지</span></a></li>
+			</c:if>
+		<li><a href=""><span class="sp1">고객센터</span></a></li>
 		</ul>
 	</div>
 

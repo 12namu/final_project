@@ -36,9 +36,5 @@ public class HomeController {
 		return "home";
 	}
 	
-	@RequestMapping("/comm/header")
-	public void go(){
-		
-	}
 	
 }

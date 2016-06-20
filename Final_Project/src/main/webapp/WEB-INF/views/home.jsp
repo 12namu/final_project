@@ -71,7 +71,14 @@
 						$("#areaspan").click(function(){
 							$("#arealist").attr('style',"display:inline");	
 						});
-				});					
+				});			
+				
+				function setinfo(){
+					var search=$("#area2").text();
+					var word=$("#subject2").text();
+					$("#input_area").val(search);
+					$("#input_subject").val(word);
+				}
 			</script>	
 </head>
 <body>
@@ -82,11 +89,10 @@
 	
 		<a href="./subject/getList?g_num=0">캘린더가기</a>
 		
-				<div id="search_box">
-			<form action="" method="get">
-				<input type="hidden" id="area" name="area" value="">
-				<input type="hidden" id="subject" name="subject">
-				
+			<div id="search_box">
+			<form action="/group/list" method="get">
+				<input type="hidden" id="input_area" name="search">
+				<input type="hidden" id="input_subject" name="word">			
 					
 			<div class="btn-group">
   				<button id="area" class="btn btn-default btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
@@ -148,7 +154,7 @@
   		
 		</div>
 	
-		<button type="submit" id="fonttype" class="btn btn-default btn-lg spanfont">검색하기</button>
+		<button type="submit" onclick="setinfo()" id="fonttype" class="btn btn-default btn-lg spanfont">검색하기</button>
 		</form>	
 		</div><!--searchbox-->
 	</div>
